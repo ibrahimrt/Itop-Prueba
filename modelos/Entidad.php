@@ -14,7 +14,6 @@ class Entidad {
 		$this->fecha_modificacion = '';
 		$this->conexion = new Conexion();
 	}
-
 	public static function listar () {
 		$conexion = new Conexion ();
 		$listado = $conexion->consultar('SELECT * FROM entity');
@@ -27,21 +26,19 @@ class Entidad {
 		$conexion->cerrar();
 		return $listado;
 	}	
-
 	public static function obtenerPorId ($id) {
+		
 		$conexion = new Conexion ();
 		$listado = $conexion->consultar("SELECT * FROM entity WHERE Id = $id");
 		$conexion->cerrar();
 		return $listado[0];
 	}
-
 	public function ingresar () {
 		$s = "INSERT INTO entity (modulo) VALUES ('$this->modulo')";
 		$resultado = $this->conexion->actualizar($s);
 		$this->conexion->cerrar();
 		return $resultado;
 	}
-
 	public function eliminar () {
 		$s = "DELETE FROM entity WHERE Id = $this->id";
 		$resultado = $this->conexion->actualizar($s);
@@ -60,7 +57,6 @@ class Entidad {
 		$this->conexion->cerrar();
 		return $resultado;
 	}
-
 	public function editar () {
 		$s = "UPDATE entity SET modulo = '$this->modulo', fecha_modificacion = '$this->fecha_modificacion' WHERE Id = $this->id";
 		$resultado = $this->conexion->actualizar($s);

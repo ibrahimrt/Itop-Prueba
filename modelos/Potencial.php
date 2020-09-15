@@ -6,6 +6,7 @@ class Potencial {
 	public $nombre;
 	public $apellido;
 	public $dni;
+	public $a;
 	private $conexion;
 
 	public function __construct () {
@@ -15,7 +16,6 @@ class Potencial {
 		$this->dni = '';
 		$this->conexion = new Conexion();
 	}
-
 	public static function listar () {
 		$conexion = new Conexion ();
 		$listado = $conexion->consultar('SELECT * FROM potenciales ');
@@ -28,26 +28,20 @@ class Potencial {
 		$conexion->cerrar();
 		return $listado;
 	}
-	
-
 	public static function obtenerPorId ($id) {
 		$conexion = new Conexion ();
 		$listado = $conexion->consultar("SELECT * FROM potenciales WHERE Id = $id");
 		$conexion->cerrar();
 		return $listado[0];
 	}
-
-	public function ingresar () {
-		
+	public function ingresar () {		
 		$s = "INSERT INTO potenciales (nombre,apellido,dni) VALUES ('$this->nombre','$this->apellido', '$this->dni')";
 		$resultado = $this->conexion->actualizar($s);
 		$this->conexion->cerrar();
 		return $resultado;
 	}
-
 	public function baja () {
-		$s = "UPDATE  potenciales SET baja = 1 WHERE Id = $this->id";
-		
+		$s = "UPDATE  potenciales SET baja = 1 WHERE Id = $this->id";		
 		$resultado = $this->conexion->actualizar($s);
 		$this->conexion->cerrar();
 		return $resultado;
@@ -58,11 +52,21 @@ class Potencial {
 		$this->conexion->cerrar();
 		return $resultado;
 	}
-
 	public function editar () {
 		$s = "UPDATE potenciales SET nombre = '$this->nombre', apellido = '$this->apellido', dni = '$this->dni' WHERE Id = $this->id";
 		$resultado = $this->conexion->actualizar($s);
 		$this->conexion->cerrar();
 		return $resultado;
+	}
+	public function fetch($dni,$number){
+		if($number!= ''){
+			$s ="SELECT id FROM potenciales where dni ='".$dni."' and id = ".$number."";
+		}else{
+			$s ="SELECT id FROM potenciales where dni ='".$dni."'";
+		}		
+		$resultado = $this->conexion->consultar($s);
+		$this->conexion->cerrar();
+		echo json_encode(['respuesta' => $resultado]);
+		die();
 	}
 }

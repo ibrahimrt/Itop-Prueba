@@ -1,7 +1,6 @@
 <?php require_once '../modelos/Potencial.php';
 
 $accion = $_POST['a'] ?? $_GET['a'] ?? '';
-
 if ($accion != '') {
 	$potencial = new Potencial();
 

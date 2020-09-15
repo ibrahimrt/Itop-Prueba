@@ -5,7 +5,9 @@ class Asignacion {
 	public $id;
 	public $relmodulo;
 	public $modulo;
-	private $conexion;
+	public $relid;
+	public $fecha_modificacion;
+	private $conexion;	
 
 	public function __construct () {
 		$this->relid = 0;
@@ -14,7 +16,6 @@ class Asignacion {
 		$this->modulo = '';		
 		$this->conexion = new Conexion();
 	}
-
 	public static function listar () {
 		$conexion = new Conexion ();
 		$listado = $conexion->consultar('SELECT * FROM entityrel 
@@ -22,7 +23,6 @@ class Asignacion {
 										inner join potenciales on entityrel.id = potenciales.id 
 										inner join actividades on entityrel.modulo = actividades.id 
 										order by entityrel.id ASC');
-		//var_dump($listado);exit;
 		$conexion->cerrar();
 		return $listado;
 	}
@@ -38,8 +38,7 @@ class Asignacion {
 		$conexion->cerrar();	
 		}else{
 			return $listado = '';
-		}
-		
+		}		
 		return $listado;
 	}
 	public static function listarActividad () {
@@ -54,8 +53,7 @@ class Asignacion {
 		$conexion->cerrar();	
 		}else{
 			return $listado = '';
-		}
-		
+		}		
 		return $listado;
 	}
 	public static function listarModulo () {
@@ -70,19 +68,15 @@ class Asignacion {
 		$conexion->cerrar();	
 		}else{
 			return $listado = '';
-		}
-		
+		}		
 		return $listado;
 	}
-	
-
 	public static function obtenerPorId ($id) {
 		$conexion = new Conexion ();
-		$listado = $conexion->consultar("SELECT * FROM entityrel WHERE Id = $id");
+		$listado = $conexion->consultar("SELECT * FROM entityrel WHERE relid = $id");
 		$conexion->cerrar();
 		return $listado[0];
 	}
-
 	public function ingresar () {
 		
 		$s = "INSERT INTO entityrel (relmodulo,id,modulo) VALUES ($this->relmodulo,$this->id,$this->modulo)";
@@ -91,16 +85,18 @@ class Asignacion {
 		$this->conexion->cerrar();
 		return $resultado;
 	}
-
 	public function eliminar () {
-		$s = "DELETE FROM entityrel WHERE Id = $this->id";
+		
+		$s = "DELETE FROM entityrel WHERE relid = $this->id";
+		
 		$resultado = $this->conexion->actualizar($s);
 		$this->conexion->cerrar();
 		return $resultado;
 	}
-
 	public function editar () {
-		$s = "UPDATE entityrel SET modulo = '$this->modulo', fecha_modificacion = '$this->fecha_modificacion' WHERE Id = $this->id";
+		
+		$s = "UPDATE entityrel SET relmodulo= $this->relmodulo, id= $this->id, modulo = $this->modulo WHERE relid = $this->relid";
+		
 		$resultado = $this->conexion->actualizar($s);
 		$this->conexion->cerrar();
 		return $resultado;

@@ -1,7 +1,6 @@
 <?php require_once '../modelos/Entidad.php';
 
 $accion = $_POST['a'] ?? $_GET['a'] ?? '';
-
 if ($accion != '') {
 	$entidad = new Entidad();
 

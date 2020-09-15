@@ -1,7 +1,6 @@
 <?php require_once '../modelos/Asignacion.php';
 
 $accion = $_POST['a'] ?? $_GET['a'] ?? '';
-
 if ($accion != '') {
 	$asignacion = new Asignacion();
 
@@ -13,6 +12,7 @@ if ($accion != '') {
 			$asignacion->ingresar();
 			break;
 		case 'Editar':
+			$asignacion->relid= base64_decode($_POST['relid']);
 			$asignacion->relmodulo = $_POST['relmodulo'];
 			$asignacion->id = $_POST['id'];
 			$asignacion->modulo= $_POST['modulo'];
@@ -22,7 +22,6 @@ if ($accion != '') {
 			$asignacion->id = base64_decode($_GET['id']);
 			$asignacion->eliminar();
 			break;
-		
 	}
 }
 
